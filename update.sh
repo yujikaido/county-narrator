@@ -11,7 +11,7 @@ set -uo pipefail
 
 INSTALL_DIR="${INSTALL_DIR:-/opt/county-narrator}"
 BACKUP_DIR_DEFAULT="${BACKUP_DIR:-/var/backups/county-narrator}"
-APP_PORT="${APP_PORT:-8000}"
+APP_PORT="${APP_PORT:-8001}"
 SERVICE="${SERVICE:-county-narrator}"
 
 # --- Branding ----------------------------------------------------------------

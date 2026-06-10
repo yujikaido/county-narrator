@@ -15,6 +15,7 @@
 set -euo pipefail
 
 INSTALL_DIR="${INSTALL_DIR:-/opt/county-narrator}"
+APP_PORT="${APP_PORT:-8001}"
 
 C_CYAN=$'\e[1;36m'; C_GREEN=$'\e[1;32m'; C_YELLOW=$'\e[1;33m'; C_RED=$'\e[1;31m'; C_RESET=$'\e[0m'
 log()  { printf "%s[+]%s %s\n" "$C_CYAN" "$C_RESET" "$*"; }
@@ -112,7 +113,7 @@ docker compose up -d --remove-orphans || die "docker compose up failed"
 IP=$(hostname -I | awk '{print $1}')
 echo
 ok "County Narrator is starting."
-echo "    Web UI:  http://$IP:8000"
+echo "    Web UI:  http://$IP:$APP_PORT"
 echo "    First start downloads the TTS model (~2 GB) -- the UI shows"
 echo "    'Warming up' until it finishes. Watch with: update logs"
 echo "    Operator console: sudo update"

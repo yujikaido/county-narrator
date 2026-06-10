@@ -5,7 +5,9 @@ services:
     container_name: county-narrator
     restart: unless-stopped
     ports:
-      - "8000:8000"
+      # Host port 8001 by default (8000 commonly taken, e.g. by county-scribe).
+      # Override with APP_PORT=xxxx in the shell or a .env file next to this.
+      - "${APP_PORT:-8001}:8000"
     environment:
       - TZ=America/Chicago
     volumes:

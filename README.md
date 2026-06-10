@@ -43,7 +43,7 @@ git fetch && git reset --hard origin/main
 
 The installer is idempotent: it installs Docker and the NVIDIA Container Toolkit if missing, enables the GPU compose override when `nvidia-smi` works, installs the `update` command, builds, and starts the stack. First startup downloads ~2 GB of model weights — the UI shows **Warming up** until the model is loaded.
 
-Open `http://<lxc-ip>:8000`.
+Open `http://<lxc-ip>:8001`.
 
 ## Updating
 
@@ -83,10 +83,10 @@ DELETE /api/history/{id}
 Example — generate and fetch a greeting from a script:
 
 ```bash
-JOB=$(curl -s -X POST http://lxc:8000/api/jobs -H 'Content-Type: application/json' \
+JOB=$(curl -s -X POST http://lxc:8001/api/jobs -H 'Content-Type: application/json' \
   -d '{"text":"Thank you for calling the county offices."}' | python3 -c 'import sys,json;print(json.load(sys.stdin)["id"])')
 # poll until done, then (studio = the 3C Host format; format=pbx for 8 kHz):
-curl -o greeting-3c-host.wav "http://lxc:8000/api/jobs/$JOB/audio?format=studio"
+curl -o greeting-3c-host.wav "http://lxc:8001/api/jobs/$JOB/audio?format=studio"
 ```
 
 ## Data layout & backups
