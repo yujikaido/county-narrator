@@ -1,6 +1,17 @@
 # Runtime data (voices, generated audio, model cache) — never commit
 data/
 
+# Local notes & screenshots — keep out of the repo
+*.txt
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.bmp
+# ...but the pip manifest must stay tracked
+!backend/requirements.txt
+
 # Python
 __pycache__/
 *.pyc
