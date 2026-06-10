@@ -8,9 +8,10 @@ ENV TZ=America/Chicago \
     PYTHONUNBUFFERED=1 \
     DATA_DIR=/app/data
 
-# git: some chatterbox deps resolve from VCS; ffmpeg+libsndfile: audio decode
+# git: some chatterbox deps resolve from VCS; ffmpeg+libsndfile: audio decode;
+# tzdata: without it the TZ env is ignored and timestamps come out UTC
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        git ffmpeg libsndfile1 curl \
+        git ffmpeg libsndfile1 curl tzdata \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
