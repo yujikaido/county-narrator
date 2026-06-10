@@ -123,6 +123,24 @@ textarea:focus {
   cursor: pointer;
 }
 .tag-btn:hover { color: var(--text); border-color: var(--accent); }
+.slider-row {
+  display: flex; align-items: center; gap: .55rem;
+  margin-top: .7rem;
+}
+.slider-row input[type="range"] {
+  flex: 1; max-width: 220px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+.slider-end { font-size: .7rem; color: var(--faint); }
+.slider-value {
+  font-size: .72rem; color: var(--accent);
+  font-family: Consolas, monospace;
+  background: var(--panel2);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 1px 6px;
+}
 
 /* ── Buttons ── */
 .btnrow { display: flex; gap: .6rem; margin-top: 1rem; flex-wrap: wrap; }

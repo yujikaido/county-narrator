@@ -194,7 +194,11 @@ async function generate() {
     const job = await api("/api/jobs", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text, voice_id: state.selectedVoice || null }),
+      body: JSON.stringify({
+        text,
+        voice_id: state.selectedVoice || null,
+        temperature: parseFloat($("temperature").value),
+      }),
     });
     pollJob(job.id);
   } catch (e) {
@@ -297,6 +301,14 @@ async function refreshHistory() {
 /* ── wire-up ─────────────────────────────────────────────── */
 
 $("script").addEventListener("input", updateCounter);
+$("temperature").addEventListener("input", () => {
+  $("temp-value").textContent = parseFloat($("temperature").value).toFixed(2);
+  localStorage.setItem("narrator_temp", $("temperature").value);
+});
+if (localStorage.getItem("narrator_temp")) {
+  $("temperature").value = localStorage.getItem("narrator_temp");
+  $("temp-value").textContent = parseFloat($("temperature").value).toFixed(2);
+}
 $("generate").addEventListener("click", generate);
 $("clear").addEventListener("click", () => {
   $("script").value = "";

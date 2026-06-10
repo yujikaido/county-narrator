@@ -44,10 +44,11 @@ class JobManager:
     # -- public API --------------------------------------------------------
 
     def submit(self, text: str, voice_id: str | None, voice_name: str,
-               voice_path: str | None) -> dict:
+               voice_path: str | None, temperature: float = 0.8) -> dict:
         text = text.strip()
         if not text:
             raise JobError("No text provided.")
+        temperature = min(max(float(temperature), 0.3), 1.5)
         if len(text) > MAX_TEXT_CHARS:
             raise JobError(f"Text is {len(text)} characters; the limit is {MAX_TEXT_CHARS}.")
         chunks = split_text(text)
@@ -61,6 +62,7 @@ class JobManager:
             "voice_id": voice_id,
             "voice_name": voice_name,
             "voice_path": voice_path,
+            "temperature": temperature,
             "chunks_total": len(chunks),
             "chunks_done": 0,
             "chunks": chunks,
@@ -171,7 +173,7 @@ class JobManager:
         pieces = []
         for i, chunk in enumerate(job["chunks"], 1):
             ct0 = time.time()
-            pieces.append(self.engine.generate_chunk(chunk))
+            pieces.append(self.engine.generate_chunk(chunk, temperature=job["temperature"]))
             with self._lock:
                 job["chunks_done"] = i
             log.info("Job %s chunk %d/%d in %.2fs", job["id"], i, job["chunks_total"], time.time() - ct0)

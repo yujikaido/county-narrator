@@ -40,6 +40,13 @@
           <button class="tag-btn" data-tag="[gasp]">[gasp]</button>
           <button class="tag-btn" data-tag="[cough]">[cough]</button>
         </div>
+        <div class="slider-row" title="Same script can be regenerated for a different take — higher values vary more between takes.">
+          <span class="tagbar-label">Delivery:</span>
+          <span class="slider-end">Consistent</span>
+          <input type="range" id="temperature" min="0.5" max="1.1" step="0.05" value="0.8">
+          <span class="slider-end">Lively</span>
+          <span class="slider-value" id="temp-value">0.80</span>
+        </div>
         <div class="btnrow">
           <button id="generate" class="btn btn-primary">Generate Audio</button>
           <button id="clear" class="btn btn-ghost">Clear</button>

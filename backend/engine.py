@@ -77,10 +77,15 @@ class TTSEngine:
 
     # -- synthesis -------------------------------------------------------
 
-    def generate_chunk(self, text: str) -> torch.Tensor:
-        """Synthesize one chunk with the active voice. Returns (1, N) float32."""
+    def generate_chunk(self, text: str, temperature: float = 0.8) -> torch.Tensor:
+        """Synthesize one chunk with the active voice. Returns (1, N) float32.
+
+        temperature is Turbo's only real delivery knob (exaggeration/cfg are
+        ignored by this model): lower = consistent/controlled, higher = lively
+        and more varied between takes.
+        """
         with torch.inference_mode():
-            wav = self.model.generate(text)
+            wav = self.model.generate(text, temperature=temperature)
         if wav.dim() == 1:
             wav = wav.unsqueeze(0)
         return wav.float().cpu()

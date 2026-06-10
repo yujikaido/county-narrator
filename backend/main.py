@@ -89,6 +89,10 @@ def delete_voice(voice_id: str):
 def create_job(body: dict):
     text = str(body.get("text", ""))
     voice_id = body.get("voice_id") or None
+    try:
+        temperature = float(body.get("temperature", 0.8))
+    except (TypeError, ValueError):
+        raise HTTPException(status_code=400, detail="temperature must be a number")
 
     voice_name = "Built-in voice"
     voice_path = None
@@ -100,7 +104,7 @@ def create_job(body: dict):
         voice_path = str(voices.path_for(voice_id))
 
     try:
-        return jobs.submit(text, voice_id, voice_name, voice_path)
+        return jobs.submit(text, voice_id, voice_name, voice_path, temperature=temperature)
     except JobError as e:
         raise HTTPException(status_code=400, detail=str(e))
 

@@ -11,6 +11,7 @@ Built on [Chatterbox Turbo](https://github.com/resemble-ai/chatterbox) (MIT) by 
 - **PBX-ready output** — every generation is exported twice: the 3C Host file (24 kHz / 16-bit PCM / mono — the format proven to upload cleanly into NEC 3C Host / 3C Administrator 10.4.x) and an 8 kHz telephony-rate fallback for prompt slots that demand it.
 - **Voice library** — save multiple named reference voices (6–30 s of clean speech: wav/mp3/m4a/flac/ogg) and switch between them per generation. A built-in voice works out of the box.
 - **Paralinguistic tags** — drop `[chuckle]`, `[sigh]`, `[gasp]`, `[cough]` into the script for natural touches.
+- **Delivery slider** — temperature control from Consistent (0.5) to Lively (1.1). Higher values also vary more between takes, so regenerating the same script gives genuinely different reads — generate a couple and keep the best.
 - **Job queue with live progress** — long scripts synthesize chunk by chunk with a progress bar; concurrent users queue instead of colliding on the GPU.
 - **Generation history** — the last 50 generations stay downloadable from the UI.
 - **Operator console** — `sudo update` opens a whiptail menu: deploy the latest release tag, tail logs, health/GPU checks, backups, disk usage, Docker prune.
@@ -73,7 +74,7 @@ GET    /api/voices                    voice library
 POST   /api/voices                    multipart: name, file
 DELETE /api/voices/{id}
 GET    /api/voices/{id}/audio         reference clip playback
-POST   /api/jobs                      {"text": "...", "voice_id": null|"<id>"}
+POST   /api/jobs                      {"text": "...", "voice_id": null|"<id>", "temperature": 0.8}
 GET    /api/jobs/{id}                 status / chunk progress
 GET    /api/jobs/{id}/audio?format=pbx|studio
 GET    /api/history                   recent generations
