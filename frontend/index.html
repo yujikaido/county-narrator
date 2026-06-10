@@ -63,10 +63,10 @@
           <div class="okline">✔ Audio ready <span id="audio-meta"></span></div>
           <audio id="player" controls></audio>
           <div class="btnrow">
-            <a id="dl-pbx" class="btn btn-success" download>Download for 3CX <small>8 kHz · 16-bit · mono</small></a>
-            <a id="dl-studio" class="btn btn-ghost" download>Studio WAV <small>24 kHz</small></a>
+            <a id="dl-pbx" class="btn btn-success" download>Download for 3C Host <small>24 kHz · 16-bit PCM · mono</small></a>
+            <a id="dl-8k" class="btn btn-ghost" download>Telephony WAV <small>8 kHz</small></a>
           </div>
-          <p class="hint">The 3CX file is ready to upload directly as an auto-attendant prompt or voicemail greeting — no conversion needed.</p>
+          <p class="hint">The 3C Host file is plain 16-bit PCM mono — ready to upload as an auto-attendant prompt or voicemail greeting, no conversion needed. The 8 kHz file is a fallback for prompt slots that demand true telephony rate.</p>
         </div>
         <div id="output-error" class="errorbox hidden"></div>
       </div>
@@ -95,8 +95,8 @@
       <div class="card">
         <div class="card-label">Output Spec</div>
         <div class="spec-row">
-          <span class="spec-badge"><b>3CX</b> 8 kHz · 16-bit PCM · mono</span>
-          <span class="spec-badge"><b>Studio</b> 24 kHz · 16-bit PCM · mono</span>
+          <span class="spec-badge"><b>3C Host</b> 24 kHz · 16-bit PCM · mono</span>
+          <span class="spec-badge"><b>Telephony</b> 8 kHz · 16-bit PCM · mono</span>
         </div>
         <p class="hint" style="margin-top:.6rem">All audio carries an imperceptible Perth watermark identifying it as AI-generated.</p>
       </div>

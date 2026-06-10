@@ -242,8 +242,10 @@ function showResult(job) {
   showOutput("output-done");
   $("audio-meta").textContent = `· ${job.duration_sec}s · ${job.voice_name}`;
   $("player").src = `/api/jobs/${job.id}/audio?format=studio`;
-  $("dl-pbx").href = `/api/jobs/${job.id}/audio?format=pbx`;
-  $("dl-studio").href = `/api/jobs/${job.id}/audio?format=studio`;
+  // 3C Host's proven format IS the 24 kHz studio master (16-bit PCM mono);
+  // the 8 kHz file is the telephony-rate fallback.
+  $("dl-pbx").href = `/api/jobs/${job.id}/audio?format=studio`;
+  $("dl-8k").href = `/api/jobs/${job.id}/audio?format=pbx`;
 }
 
 function showError(message) {
@@ -271,8 +273,8 @@ async function refreshHistory() {
         <div class="history-sub">${escapeHtml(item.voice_name)} · ${item.duration_sec}s · ${item.created}</div>
       </div>
       <div class="history-actions">
-        <a href="/api/jobs/${item.id}/audio?format=pbx">3CX</a>
-        <a href="/api/jobs/${item.id}/audio?format=studio">WAV</a>
+        <a href="/api/jobs/${item.id}/audio?format=studio">3C&nbsp;Host</a>
+        <a href="/api/jobs/${item.id}/audio?format=pbx">8&nbsp;kHz</a>
         <button class="icon-btn" data-act="play" title="Play">▶</button>
         <button class="icon-btn" data-act="del" title="Delete">✕</button>
       </div>`;
@@ -280,8 +282,8 @@ async function refreshHistory() {
       showOutput("output-done");
       $("audio-meta").textContent = `· ${item.duration_sec}s · ${item.voice_name}`;
       $("player").src = `/api/jobs/${item.id}/audio?format=studio`;
-      $("dl-pbx").href = `/api/jobs/${item.id}/audio?format=pbx`;
-      $("dl-studio").href = `/api/jobs/${item.id}/audio?format=studio`;
+      $("dl-pbx").href = `/api/jobs/${item.id}/audio?format=studio`;
+      $("dl-8k").href = `/api/jobs/${item.id}/audio?format=pbx`;
       $("player").play().catch(() => {});
     });
     row.querySelector('[data-act="del"]').addEventListener("click", async () => {

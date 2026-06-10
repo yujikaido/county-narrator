@@ -1,12 +1,15 @@
 """Audio post-processing: stitching, normalization, and WAV exports.
 
 Two export targets:
-  studio -- 24 kHz / 16-bit PCM / mono   (full quality, for editing/archive)
-  pbx    -- 8 kHz / 16-bit PCM / mono    (3CX auto-attendant / voicemail format)
+  studio -- 24 kHz / 16-bit PCM / mono   (full quality; ALSO the proven upload
+            format for NEC 3C Host / 3C Administrator 10.4.x, which accepts
+            plain 16-bit PCM mono WAV at this rate)
+  pbx    -- 8 kHz / 16-bit PCM / mono    (telephony-rate fallback for prompt
+            slots that require 8 kHz)
 
-3CX rejects anything that isn't plain PCM WAV at 8 kHz 16-bit mono, which is
-why the pbx export exists as a first-class output rather than a separate
-conversion step.
+The PBX rejects float/24-bit/stereo WAVs, which is why plain 16-bit PCM mono
+is guaranteed here as a first-class output rather than a separate conversion
+step (the old app needed a manual "sanitize" pass for this).
 """
 import io
 import wave

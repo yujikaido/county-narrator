@@ -120,7 +120,7 @@ def job_audio(job_id: str, format: str = "pbx"):
     path = jobs.audio_path(job_id, format)
     if not path:
         raise HTTPException(status_code=404, detail="Audio not found (job may have failed or been pruned)")
-    label = "3cx-8khz" if format == "pbx" else "studio-24khz"
+    label = "8khz" if format == "pbx" else "3c-host"
     return FileResponse(path, media_type="audio/wav",
                         filename=f"county-narrator-{job_id}-{label}.wav")
 

@@ -2,13 +2,13 @@
 
 **Self-hosted text-to-speech for auto-attendant and voicemail greetings.**
 
-Type a greeting script, pick a voice (or clone one from a short clip), and download a WAV that's **ready to upload straight into 3CX** — 8 kHz, 16-bit PCM, mono, no conversion step needed. Runs entirely on-premises on a single NVIDIA GPU; no cloud, no per-character fees, no county audio leaving the building.
+Type a greeting script, pick a voice (or clone one from a short clip), and download a WAV that's **ready to upload straight into the PBX** (NEC 3C Host / 3C Administrator) — plain 16-bit PCM, mono, no conversion step needed. Runs entirely on-premises on a single NVIDIA GPU; no cloud, no per-character fees, no county audio leaving the building.
 
 Built on [Chatterbox Turbo](https://github.com/resemble-ai/chatterbox) (MIT) by Resemble AI — a 350M-parameter model that runs ~6× realtime on a modest GPU and embeds an imperceptible [Perth watermark](https://github.com/resemble-ai/perth) marking the audio as AI-generated.
 
 ## Features
 
-- **3CX-ready output** — every generation is exported twice: a studio master (24 kHz) and a PBX file (8 kHz / 16-bit PCM / mono) that 3CX accepts as an auto-attendant prompt or voicemail greeting.
+- **PBX-ready output** — every generation is exported twice: the 3C Host file (24 kHz / 16-bit PCM / mono — the format proven to upload cleanly into NEC 3C Host / 3C Administrator 10.4.x) and an 8 kHz telephony-rate fallback for prompt slots that demand it.
 - **Voice library** — save multiple named reference voices (6–30 s of clean speech: wav/mp3/m4a/flac/ogg) and switch between them per generation. A built-in voice works out of the box.
 - **Paralinguistic tags** — drop `[chuckle]`, `[sigh]`, `[gasp]`, `[cough]` into the script for natural touches.
 - **Job queue with live progress** — long scripts synthesize chunk by chunk with a progress bar; concurrent users queue instead of colliding on the GPU.
@@ -59,9 +59,9 @@ sudo update apply        # or: sudo update → "Apply update"
 
 `update apply --hard` additionally pulls a fresh base image (CVE refresh). `sudo update` with no arguments opens the full menu.
 
-## Using the output in 3CX
+## Using the output in the PBX (NEC 3C Host / 3C Administrator)
 
-Download the **“Download for 3CX”** file and upload it directly in the 3CX Management Console (auto-attendant prompt / voicemail greeting). It is already in the only format 3CX reliably accepts: **WAV, PCM, 8 kHz, 16-bit, mono**. The Studio WAV (24 kHz) is for editing or archiving.
+Download the **“Download for 3C Host”** file and upload it directly as an auto-attendant prompt or voicemail greeting. It is already **WAV, plain 16-bit PCM, mono** — the format 3C Administrator 10.4.x accepts without complaint (float/24-bit/stereo WAVs get rejected). If a particular prompt slot insists on telephony rate, use the **8 kHz** download instead; same audio, resampled with proper anti-aliasing.
 
 ## API
 
@@ -80,13 +80,13 @@ GET    /api/history                   recent generations
 DELETE /api/history/{id}
 ```
 
-Example — generate and fetch a 3CX greeting from a script:
+Example — generate and fetch a greeting from a script:
 
 ```bash
 JOB=$(curl -s -X POST http://lxc:8000/api/jobs -H 'Content-Type: application/json' \
   -d '{"text":"Thank you for calling the county offices."}' | python3 -c 'import sys,json;print(json.load(sys.stdin)["id"])')
-# poll until done, then:
-curl -o greeting-3cx.wav "http://lxc:8000/api/jobs/$JOB/audio?format=pbx"
+# poll until done, then (studio = the 3C Host format; format=pbx for 8 kHz):
+curl -o greeting-3c-host.wav "http://lxc:8000/api/jobs/$JOB/audio?format=studio"
 ```
 
 ## Data layout & backups
