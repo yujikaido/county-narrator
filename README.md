@@ -27,7 +27,7 @@ Built on [Chatterbox Turbo](https://github.com/resemble-ai/chatterbox) (MIT) by 
 
 ```bash
 # inside the LXC, as root
-git clone https://github.com/YOURUSER/county-narrator.git /opt/county-narrator
+git clone https://github.com/yujikaido/county-narrator.git /opt/county-narrator
 bash /opt/county-narrator/install.sh
 ```
 
@@ -37,7 +37,7 @@ Copy this folder anywhere on the box and run `bash install.sh` — it copies its
 
 ```bash
 cd /opt/county-narrator
-git init && git remote add origin https://github.com/YOURUSER/county-narrator.git
+git init && git remote add origin https://github.com/yujikaido/county-narrator.git
 git fetch && git reset --hard origin/main
 ```
 

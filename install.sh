@@ -5,7 +5,7 @@
 # Safe to re-run; each step is idempotent.
 #
 #   Option A (recommended): clone from GitHub, then run
-#       git clone https://github.com/YOURUSER/county-narrator.git /opt/county-narrator
+#       git clone https://github.com/yujikaido/county-narrator.git /opt/county-narrator
 #       bash /opt/county-narrator/install.sh
 #
 #   Option B: copy this folder anywhere (e.g. via WinSCP) and run
