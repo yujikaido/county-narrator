@@ -1,0 +1,9 @@
+data/
+.git/
+__pycache__/
+*.pyc
+README.md
+docs/
+install.sh
+update.sh
+docker-compose*.yml

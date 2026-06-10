@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>County Narrator</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎙️</text></svg>">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-icon">🎙️</span>
+      <div>
+        <h1>County Narrator</h1>
+        <p>Auto-attendant &amp; voicemail greeting studio</p>
+      </div>
+    </div>
+    <div class="statusbox" id="statusbox">
+      <span class="dot dot-warn" id="status-dot"></span>
+      <span id="status-text">Connecting…</span>
+    </div>
+  </header>
+
+  <main class="layout">
+    <!-- ───────── Script / generate column ───────── -->
+    <section class="col col-main">
+      <div class="card">
+        <div class="card-label">Greeting Script</div>
+        <textarea id="script" rows="10"
+          placeholder="Thank you for calling the Starke County offices. Our normal business hours are Monday through Friday… &#10;&#10;Tip: use [chuckle], [sigh], or [gasp] for natural touches."></textarea>
+        <div class="script-meta">
+          <span id="char-count">0 characters</span>
+          <span id="chunk-est"></span>
+        </div>
+        <div class="tagbar">
+          <span class="tagbar-label">Insert tag:</span>
+          <button class="tag-btn" data-tag="[chuckle]">[chuckle]</button>
+          <button class="tag-btn" data-tag="[sigh]">[sigh]</button>
+          <button class="tag-btn" data-tag="[gasp]">[gasp]</button>
+          <button class="tag-btn" data-tag="[cough]">[cough]</button>
+        </div>
+        <div class="btnrow">
+          <button id="generate" class="btn btn-primary">Generate Audio</button>
+          <button id="clear" class="btn btn-ghost">Clear</button>
+        </div>
+      </div>
+
+      <div class="card" id="output-card">
+        <div class="card-label">Output</div>
+        <div id="output-idle" class="output-placeholder">
+          <div class="ph-icon">🎧</div>
+          <div>Generated audio will appear here</div>
+        </div>
+        <div id="output-progress" class="hidden">
+          <div class="progress-row">
+            <div class="spinner"></div>
+            <span id="progress-text">Queued…</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+        </div>
+        <div id="output-done" class="hidden">
+          <div class="okline">✔ Audio ready <span id="audio-meta"></span></div>
+          <audio id="player" controls></audio>
+          <div class="btnrow">
+            <a id="dl-pbx" class="btn btn-success" download>Download for 3CX <small>8 kHz · 16-bit · mono</small></a>
+            <a id="dl-studio" class="btn btn-ghost" download>Studio WAV <small>24 kHz</small></a>
+          </div>
+          <p class="hint">The 3CX file is ready to upload directly as an auto-attendant prompt or voicemail greeting — no conversion needed.</p>
+        </div>
+        <div id="output-error" class="errorbox hidden"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Recent Generations</div>
+        <div id="history"><p class="hint">Nothing yet.</p></div>
+      </div>
+    </section>
+
+    <!-- ───────── Voice column ───────── -->
+    <aside class="col col-side">
+      <div class="card">
+        <div class="card-label">Voice</div>
+        <div id="voice-list"></div>
+        <details class="uploader">
+          <summary>+ Add a voice</summary>
+          <p class="hint">Upload 6–30 seconds of clean speech (wav, mp3, m4a, flac, ogg). The voice is cloned from this clip.</p>
+          <input type="text" id="voice-name" placeholder="Voice name (e.g. Front Desk – Susan)">
+          <input type="file" id="voice-file" accept=".wav,.mp3,.m4a,.flac,.ogg">
+          <button id="voice-upload" class="btn btn-primary btn-sm">Upload voice</button>
+          <div id="voice-upload-msg" class="hint"></div>
+        </details>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Output Spec</div>
+        <div class="spec-row">
+          <span class="spec-badge"><b>3CX</b> 8 kHz · 16-bit PCM · mono</span>
+          <span class="spec-badge"><b>Studio</b> 24 kHz · 16-bit PCM · mono</span>
+        </div>
+        <p class="hint" style="margin-top:.6rem">All audio carries an imperceptible Perth watermark identifying it as AI-generated.</p>
+      </div>
+    </aside>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

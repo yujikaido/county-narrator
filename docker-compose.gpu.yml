@@ -1,0 +1,12 @@
+# GPU override template.
+#
+# install.sh copies this to docker-compose.override.yml automatically when it
+# detects a working nvidia-smi. The override file is gitignored, so updates
+# never clobber it. To enable by hand:
+#   cp docker-compose.gpu.yml docker-compose.override.yml
+services:
+  county-narrator:
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility

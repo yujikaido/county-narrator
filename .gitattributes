@@ -1,0 +1,6 @@
+# Force LF everywhere — these files are deployed to Linux (bash chokes on CRLF),
+# and the working copy may be copied over raw (WinSCP) rather than via git.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.wav binary

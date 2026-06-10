@@ -1,0 +1,9 @@
+# Model — pinned for reproducible deploys. Chatterbox pins its own deps
+# (torch==2.6.0, transformers, librosa, ...); the Docker base image ships the
+# matching CUDA torch so pip keeps it.
+chatterbox-tts==0.1.7
+
+# Web server
+fastapi>=0.115,<1.0
+uvicorn[standard]>=0.30,<1.0
+python-multipart>=0.0.9

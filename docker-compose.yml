@@ -1,0 +1,15 @@
+services:
+  county-narrator:
+    build: .
+    image: county-narrator:latest
+    container_name: county-narrator
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - TZ=America/Chicago
+    volumes:
+      # Voices + generated audio (back this up)
+      - ./data:/app/data
+      # Model weights cache — survives rebuilds so updates don't re-download ~2 GB
+      - ./data/hf-cache:/root/.cache/huggingface

@@ -1,0 +1,17 @@
+# Runtime data (voices, generated audio, model cache) — never commit
+data/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Local overrides
+docker-compose.override.yml
+.env
+
+# OS noise
+.DS_Store
+Thumbs.db
