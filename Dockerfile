@@ -9,7 +9,10 @@ ENV TZ=America/Chicago \
     DATA_DIR=/app/data
 
 # git: some chatterbox deps resolve from VCS; ffmpeg+libsndfile: audio decode;
-# tzdata: without it the TZ env is ignored and timestamps come out UTC
+# tzdata: without it the TZ env is ignored and timestamps come out UTC.
+# DEBIAN_FRONTEND as ARG (build-only): tzdata otherwise stops the build with
+# an interactive timezone prompt that can never be answered.
+ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends \
         git ffmpeg libsndfile1 curl tzdata \
     && rm -rf /var/lib/apt/lists/*
