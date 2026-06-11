@@ -73,6 +73,7 @@ class JobManager:
         with self._lock:
             self._jobs[job["id"]] = job
             self._order.append(job["id"])
+            self._trim_finished_locked()
         self._queue.put(job["id"])
         log.info("Job %s queued: %d chunk(s), voice=%s", job["id"], len(chunks), voice_name)
         return self.status(job["id"])
@@ -87,7 +88,8 @@ class JobManager:
                 for jid in self._order:
                     if jid == job_id:
                         break
-                    if self._jobs[jid]["status"] in ("queued", "running"):
+                    other = self._jobs.get(jid)  # tolerate ids deleted mid-flight
+                    if other and other["status"] in ("queued", "running"):
                         ahead += 1
             return {
                 "id": job["id"],
@@ -100,6 +102,20 @@ class JobManager:
                 "queue_ahead": ahead,
                 "created": job["created"],
             }
+
+    def _trim_finished_locked(self, keep: int = 200):
+        """Drop the oldest finished jobs from memory (call with lock held).
+
+        Audio/history live on disk, so dropping a finished job only stops
+        /api/jobs/{id} status polling for it — the files stay downloadable.
+        """
+        excess = len(self._order) - keep
+        if excess <= 0:
+            return
+        for jid in [j for j in self._order
+                    if self._jobs.get(j, {}).get("status") in ("done", "error")][:excess]:
+            self._order.remove(jid)
+            self._jobs.pop(jid, None)
 
     def audio_path(self, job_id: str, fmt: str) -> Path | None:
         path = self.outputs / f"{job_id}.{fmt}.wav"
@@ -125,7 +141,11 @@ class JobManager:
                 path.unlink()
                 found = True
         with self._lock:
+            # Keep _jobs and _order in sync — a stale id left in _order made
+            # the queue-position scan KeyError on the next submission.
             self._jobs.pop(job_id, None)
+            if job_id in self._order:
+                self._order.remove(job_id)
         return found
 
     def prune_history(self):
